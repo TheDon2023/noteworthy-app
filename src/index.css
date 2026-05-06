@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 35% 12%;
+    --foreground: 43 40% 92%;
+    --card: 222 35% 15%;
+    --card-foreground: 43 40% 92%;
+    --popover: 222 35% 15%;
+    --popover-foreground: 43 40% 92%;
+    --primary: 43 50% 54%;
+    --primary-foreground: 222 35% 12%;
+    --secondary: 222 30% 22%;
+    --secondary-foreground: 43 40% 92%;
+    --muted: 222 25% 25%;
+    --muted-foreground: 43 20% 70%;
+    --accent: 43 50% 54%;
+    --accent-foreground: 222 35% 12%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 25% 25%;
+    --input: 222 25% 25%;
+    --ring: 43 50% 54%;
+    --radius: 0.625rem;
+    --sidebar-background: 222 35% 10%;
+    --sidebar-foreground: 43 40% 92%;
+    --sidebar-primary: 43 50% 54%;
+    --sidebar-primary-foreground: 222 35% 12%;
+    --sidebar-accent: 222 30% 22%;
+    --sidebar-accent-foreground: 43 40% 92%;
+    --sidebar-border: 222 25% 25%;
+    --sidebar-ring: 43 50% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer utilities {
+  .gold-gradient {
+    background: linear-gradient(135deg, #c9a84c 0%, #e0c674 50%, #c9a84c 100%);
+  }
+  .navy-gradient {
+    background: linear-gradient(180deg, #1a2744 0%, #0f1929 100%);
+  }
+  .glass-panel {
+    background: rgba(26, 39, 68, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+  }
+  .text-gold {
+    color: #c9a84c;
+  }
+  .bg-navy {
+    background-color: #1a2744;
+  }
+  .border-gold {
+    border-color: #c9a84c;
+  }
+  .animate-pulse-gold {
+    animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes pulse-gold {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(201, 168, 76, 0); }
+  }
+  .animate-ring {
+    animation: ring-pulse 1.5s ease-out infinite;
+  }
+  @keyframes ring-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1929;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9a84c;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e0c674;
+}

@@ -8,9 +8,10 @@ import {
   Phone, BarChart3, Scale, Users, ClipboardList,
   Play, BookOpen, Award, ChevronRight, Headphones,
   TrendingUp, Shield, Mic, Zap, Sparkles, Target,
-  Home, DollarSign, ArrowRight
+  Home, DollarSign, ArrowRight, Calendar, GraduationCap
 } from 'lucide-react';
 import { roles } from '@/data/roles';
+import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -23,6 +24,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user, logout, isLoading } = useAuth();
   const resultsQuery = trpc.ai.getResults.useQuery();
   const aiStatus = trpc.ai.checkAIStatus.useQuery();
   const results = resultsQuery.data || [];
@@ -49,7 +51,34 @@ export default function Dashboard() {
               <p className="text-xs text-[#c9a84c]">AI Onboarding Simulator</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {/* User Auth Area */}
+            {isLoading ? (
+              <div className="w-8 h-8 rounded-full bg-[#c9a84c]/10 animate-pulse" />
+            ) : user ? (
+              <div className="flex items-center gap-2">
+                <div className="text-right hidden sm:block">
+                  <p className="text-xs font-semibold text-[#f8f6f1]">{user.name || 'User'}</p>
+                  <p className="text-[10px] text-[#c9a84c]">{user.email || ''}</p>
+                </div>
+                <button
+                  onClick={() => logout()}
+                  className="w-8 h-8 rounded-full bg-[#c9a84c]/20 border border-[#c9a84c]/30 flex items-center justify-center text-[#c9a84c] hover:bg-[#c9a84c]/30 transition-all"
+                  title="Sign Out"
+                >
+                  <Users className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Button
+                size="sm"
+                onClick={() => navigate('/login')}
+                className="gold-gradient text-[#1a2744] font-semibold text-xs"
+              >
+                <Users className="w-3 h-3 mr-1" />
+                Sign In
+              </Button>
+            )}
             <div className="hidden sm:flex items-center gap-2 text-sm text-[#c9a84c]/80">
               <Zap className="w-4 h-4" />
               <span>{aiStatus.data?.mode === 'kimi-ai' ? 'Kimi AI' : 'Demo Mode'}</span>
@@ -236,6 +265,23 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
+          <Card className="glass-panel border-pink-500/20 hover:border-pink-500/40 transition-all cursor-pointer" onClick={() => navigate('/training')}>
+            <CardContent className="p-5">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-pink-500/10 flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="w-6 h-6 text-pink-400" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-[#f8f6f1] mb-1">Training Assignments</h4>
+                  <p className="text-xs text-[#f8f6f1]/50 mb-3">Mr. GetMoney's targeted training for the team.</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-pink-400 font-semibold">View Assignments</span>
+                    <ArrowRight className="w-3 h-3 text-pink-400" />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -387,7 +433,53 @@ export default function Dashboard() {
               </Card>
             );
           })}
+          <Card className="glass-panel border-orange-500/20 hover:border-orange-500/40 transition-all cursor-pointer" onClick={() => navigate('/employees')}>
+            <CardContent className="p-5">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-orange-400" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-[#f8f6f1] mb-1">Employee Directory</h4>
+                  <p className="text-xs text-[#f8f6f1]/50 mb-3">Track team progress, skills, and training.</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-orange-400 font-semibold">View Team</span>
+                    <ArrowRight className="w-3 h-3 text-orange-400" />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
+      </section>
+
+      {/* Weekly Stats CTA */}
+      <section className="max-w-7xl mx-auto px-4 py-6">
+        <Card className="glass-panel border-[#c9a84c]/20 bg-gradient-to-r from-[#1a2744] to-[#0f1929] cursor-pointer" onClick={() => navigate('/weekly')}>
+          <CardContent className="p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="w-14 h-14 rounded-xl bg-[#c9a84c]/10 flex items-center justify-center">
+                <Calendar className="w-7 h-7 text-[#c9a84c]" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-xl font-bold text-[#f8f6f1] mb-2">
+                  Weekly Scorecard
+                </h3>
+                <p className="text-[#f8f6f1]/60">
+                  Track your non-negotiables every week. New sellers, buyers, outreach touchpoints, 
+                  qualification calls, and deals advanced — all scored against SOP targets.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                className="border-[#c9a84c]/30 text-[#c9a84c] hover:bg-[#c9a84c]/10 flex-shrink-0"
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
+                View Scorecard
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Buyer Acquisition SOP CTA */}

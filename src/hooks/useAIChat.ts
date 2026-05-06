@@ -11,6 +11,7 @@ export interface ChatMessage {
 export interface AIChatState {
   conversationId: number | null;
   personaId: string | null;
+  persona: { name: string; title: string; gender: 'male' | 'female' } | null;
   messages: ChatMessage[];
   isLoading: boolean;
   callStage: "select" | "preparing" | "ringing" | "connected" | "ended";
@@ -22,6 +23,7 @@ export function useAIChat() {
   const [state, setState] = useState<AIChatState>({
     conversationId: null,
     personaId: null,
+    persona: null,
     messages: [],
     isLoading: false,
     callStage: "select",
@@ -36,10 +38,11 @@ export function useAIChat() {
   const aiStatus = trpc.ai.checkAIStatus.useQuery();
 
   const selectPersona = useCallback(
-    async (personaId: string) => {
+    async (personaId: string, personaData?: { name: string; title: string; gender: 'male' | 'female' }) => {
       setState((prev) => ({
         ...prev,
         personaId,
+        persona: personaData || null,
         callStage: "preparing",
         messages: [],
         error: null,
@@ -166,6 +169,7 @@ export function useAIChat() {
     setState({
       conversationId: null,
       personaId: null,
+      persona: null,
       messages: [],
       isLoading: false,
       callStage: "select",

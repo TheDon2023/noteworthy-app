@@ -28,8 +28,8 @@ export function useSpeech() {
     return synthRef.current;
   }, []);
 
-  // Speak text using TTS
-  const speak = useCallback((text: string, onEnd?: () => void): Promise<void> => {
+  // Speak text using TTS with optional gender-matched voice
+  const speak = useCallback((text: string, onEnd?: () => void, gender?: 'male' | 'female'): Promise<void> => {
     return new Promise((resolve) => {
       const synth = getSynth();
       if (!synth) {
@@ -47,14 +47,31 @@ export function useSpeech() {
       utterance.pitch = 1;
       utterance.volume = 1;
 
-      // Try to find a good voice
+      // Load voices and pick gender-matched one
       const voices = synth.getVoices();
-      const preferredVoice = voices.find(v => 
-        v.name.includes('Google US English') || 
-        v.name.includes('Samantha') ||
-        v.name.includes('Microsoft David') ||
-        (v.lang === 'en-US' && v.name.includes('Male'))
-      );
+      let preferredVoice: SpeechSynthesisVoice | undefined;
+      
+      if (gender && voices.length > 0) {
+        const enVoices = voices.filter(v => v.lang.startsWith('en'));
+        if (gender === 'female') {
+          preferredVoice = enVoices.find(v => 
+            /samantha|karen|tessa|zira|victoria|female|woman|girl|fiona|moira|veena|lisa|anna/i.test(v.name)
+          );
+        } else {
+          preferredVoice = enVoices.find(v => 
+            /david|daniel|tom|mark|paul|tony|fred|alex|male|man|guy|google us english/i.test(v.name)
+          );
+        }
+      }
+      
+      // Fallback to any good English voice
+      if (!preferredVoice) {
+        preferredVoice = voices.find(v => 
+          /Google US English|Samantha|Microsoft David/i.test(v.name) || 
+          (v.lang === 'en-US')
+        );
+      }
+      
       if (preferredVoice) {
         utterance.voice = preferredVoice;
       }

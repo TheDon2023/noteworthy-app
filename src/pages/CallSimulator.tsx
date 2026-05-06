@@ -60,9 +60,9 @@ export default function CallSimulator() {
   useEffect(() => {
     const lastMessage = aiChat.messages[aiChat.messages.length - 1];
     if (lastMessage?.role === 'ai' && aiChat.callStage === 'connected') {
-      speech.speak(lastMessage.text);
+      speech.speak(lastMessage.text, undefined, aiChat.persona?.gender || 'male');
     }
-  }, [aiChat.messages, aiChat.callStage]);
+  }, [aiChat.messages, aiChat.callStage, aiChat.persona]);
 
   const handleStartCall = async (personaId: string) => {
     await aiChat.selectPersona(personaId);
@@ -489,7 +489,7 @@ export default function CallSimulator() {
                     ) : (
                       <>
                         <Mic className="w-4 h-4 mr-2" />
-                        Hold to Speak
+                        Push to Speak
                       </>
                     )}
                   </Button>

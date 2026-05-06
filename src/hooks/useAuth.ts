@@ -33,6 +33,19 @@ export function useAuth(options?: UseAuthOptions) {
     },
   });
 
+  const ensureProfile = trpc.employee.ensureProfile.useMutation();
+
+  useEffect(() => {
+    if (user?.id) {
+      ensureProfile.mutate({
+        userId: user.id,
+        name: user.name || undefined,
+        email: user.email || undefined,
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
   const logout = useCallback(() => logoutMutation.mutate(), [logoutMutation]);
 
   useEffect(() => {

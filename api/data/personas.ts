@@ -10,6 +10,7 @@ export interface Persona {
   systemPrompt: string;
   initialMessage: string;
   context: string;
+  gender: 'male' | 'female';
   coachingRubric: CoachingCriterion[];
 }
 
@@ -27,6 +28,7 @@ export const personas: Persona[] = [
   {
     id: 'mrs-henderson',
     name: 'Mrs. Henderson',
+    gender: 'female',
     title: 'Note Holder',
     roleId: 'acquisition',
     scenarioType: 'seller',
@@ -113,6 +115,7 @@ Respond naturally as Mrs. Henderson would. Use simple language. Show emotion whe
   {
     id: 'mr-thompson',
     name: 'Mr. Thompson',
+    gender: 'male',
     title: 'Potential Investor',
     roleId: 'buyer-relations',
     scenarioType: 'buyer',
@@ -210,6 +213,7 @@ Respond as a seasoned investor. Use industry terms. Be polite but demanding.`,
   {
     id: 'jennifer-walsh',
     name: 'Jennifer Walsh',
+    gender: 'female',
     title: 'Title Officer',
     roleId: 'operations',
     scenarioType: 'title-agent',
@@ -304,6 +308,7 @@ Respond professionally, using title industry terminology. You are helpful but fi
   {
     id: 'sarah-underwriter',
     name: 'Sarah',
+    gender: 'male',
     title: 'Underwriting Analyst (Internal)',
     roleId: 'underwriting',
     scenarioType: 'team-member',
@@ -402,6 +407,7 @@ You are presenting TO the team, not being questioned by them in this scenario. B
   {
     id: 'alex-acquisition',
     name: 'Alex',
+    gender: 'male',
     title: 'Acquisition Lead (Internal)',
     roleId: 'legal',
     scenarioType: 'team-member',
@@ -490,6 +496,7 @@ This is a training scenario for the Legal Officer. Push back enough to make them
   {
     id: 'emergency-team',
     name: 'Team',
+    gender: 'male',
     title: 'Emergency Crisis Call',
     roleId: 'operations',
     scenarioType: 'team-member',
@@ -587,6 +594,7 @@ Respond as multiple team members in sequence. Make it feel like a real crisis ca
   {
     id: 'chris-peterson',
     name: 'Chris Peterson',
+    gender: 'male',
     title: 'Institutional Note Fund Manager',
     roleId: 'buyer-pool',
     scenarioType: 'buyer',
@@ -686,6 +694,7 @@ Respond as a seasoned institutional investor. Be direct, occasionally blunt. Use
   {
     id: 'maria-santos',
     name: 'Maria Santos',
+    gender: 'female',
     title: 'First-Time Note Investor',
     roleId: 'buyer-pool',
     scenarioType: 'buyer',
@@ -780,6 +789,7 @@ Respond as a smart, cautious beginner who needs education and reassurance.`,
   {
     id: 'david-kim',
     name: 'David Kim',
+    gender: 'male',
     title: 'Referral Partner — Real Estate Investor',
     roleId: 'buyer-pool',
     scenarioType: 'buyer-agent',
@@ -873,6 +883,7 @@ Respond as a busy, connected investor who guards his network carefully.`,
   {
     id: 'robert-chen',
     name: 'Robert Chen',
+    gender: 'male',
     title: 'CPA & Real Estate Tax Advisor',
     roleId: 'referral-partner',
     scenarioType: 'buyer-agent',
@@ -962,6 +973,7 @@ Respond as a careful, analytical CPA who protects his clients above all else.`,
   {
     id: 'amanda-foster',
     name: 'Amanda Foster',
+    gender: 'female',
     title: 'REI Meetup Organizer',
     roleId: 'referral-partner',
     scenarioType: 'buyer-agent',

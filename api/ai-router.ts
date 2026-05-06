@@ -290,6 +290,7 @@ export const aiRouter = createRouter({
       scenarioType: p.scenarioType,
       context: p.context,
       initialMessage: p.initialMessage,
+      gender: p.gender,
     }));
   }),
 

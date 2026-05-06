@@ -16,7 +16,7 @@ export const users = mysqlTable("users", {
   name: varchar("name", { length: 255 }),
   email: varchar("email", { length: 320 }),
   avatar: text("avatar"),
-  role: varchar("role", { length: 20 }).default("user").notNull(),
+  role: varchar("role", { length: 20 }).default("user").notNull(), // user | admin
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
   lastSignInAt: timestamp("lastSignInAt").defaultNow().notNull(),
@@ -24,6 +24,59 @@ export const users = mysqlTable("users", {
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
+
+// Employee Profiles - extends users with work info
+export const employeeProfiles = mysqlTable("employeeProfiles", {
+  id: serial("id").primaryKey(),
+  userId: bigint("userId", { mode: "number", unsigned: true }).notNull().unique(),
+  jobRole: varchar("jobRole", { length: 50 }), // acquisition | underwriting | legal | buyer-relations | operations | buyer-pool | referral-partner
+  department: varchar("department", { length: 50 }),
+  hireDate: timestamp("hireDate"),
+  status: varchar("status", { length: 20 }).default("active").notNull(), // active | on-leave | terminated
+  phone: varchar("phone", { length: 50 }),
+  emergencyContact: varchar("emergencyContact", { length: 255 }),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull().$onUpdate(() => new Date()),
+});
+
+export type EmployeeProfile = typeof employeeProfiles.$inferSelect;
+export type InsertEmployeeProfile = typeof employeeProfiles.$inferInsert;
+
+// Employee Skill Ratings - proficiency per skill area
+export const skillRatings = mysqlTable("skillRatings", {
+  id: serial("id").primaryKey(),
+  userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
+  skillArea: varchar("skillArea", { length: 50 }).notNull(), // seller-qualification | buyer-vetting | deal-structuring | compliance | negotiation | closing
+  rating: tinyint("rating").notNull(), // 1-10 scale
+  assessedBy: varchar("assessedBy", { length: 255 }), // manager name or "ai"
+  assessmentDate: timestamp("assessmentDate").defaultNow().notNull(),
+  notes: text("notes"),
+});
+
+export type SkillRating = typeof skillRatings.$inferSelect;
+export type InsertSkillRating = typeof skillRatings.$inferInsert;
+
+// Training Assignments - targeted training from Mr. GetMoney
+export const trainingAssignments = mysqlTable("trainingAssignments", {
+  id: serial("id").primaryKey(),
+  userId: bigint("userId", { mode: "number", unsigned: true }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  trainingType: varchar("trainingType", { length: 50 }).notNull(), // scenario | study-material | sop-review | mentor-session
+  relatedRole: varchar("relatedRole", { length: 50 }), // which company role this targets
+  relatedSkill: varchar("relatedSkill", { length: 50 }), // which skill gap this addresses
+  status: varchar("status", { length: 20 }).default("assigned").notNull(), // assigned | in-progress | completed | overdue
+  priority: varchar("priority", { length: 10 }).default("medium").notNull(), // high | medium | low
+  assignedBy: varchar("assignedBy", { length: 255 }).default("Mr. GetMoney").notNull(),
+  assignedAt: timestamp("assignedAt").defaultNow().notNull(),
+  dueDate: timestamp("dueDate"),
+  completedAt: timestamp("completedAt"),
+  completionNotes: text("completionNotes"),
+});
+
+export type TrainingAssignment = typeof trainingAssignments.$inferSelect;
+export type InsertTrainingAssignment = typeof trainingAssignments.$inferInsert;
 
 // Conversations - AI training sessions
 export const conversations = mysqlTable("conversations", {

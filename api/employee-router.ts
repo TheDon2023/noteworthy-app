@@ -443,4 +443,162 @@ export const employeeRouter = createRouter({
         () => null,
       );
     }),
+
+  // ========== DAILY BRIEFING (War Room) ==========
+  dailyBriefing: publicQuery
+    .input(z.object({ userId: z.number() }))
+    .query(async ({ input }) => {
+      return withFallback(
+        async () => {
+          const now = new Date();
+          const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+          const user = await getDb().query.users.findFirst({
+            where: eq(users.id, input.userId),
+          });
+          if (!user) return null;
+
+          const profile = await getDb().query.employeeProfiles.findFirst({
+            where: eq(employeeProfiles.userId, input.userId),
+          });
+
+          // Yesterday's work
+          const results = await getDb().query.scenarioResults.findMany({
+            where: eq(scenarioResults.userId, input.userId),
+            orderBy: [desc(scenarioResults.completedAt)],
+          });
+          const yesterdaysResults = results.filter(r => {
+            const d = r.completedAt ? new Date(r.completedAt) : null;
+            return d && d >= yesterday && d < now;
+          });
+
+          // Training activity
+          const allTrainings = await getDb().query.trainingAssignments.findMany({
+            where: eq(trainingAssignments.userId, input.userId),
+            orderBy: [desc(trainingAssignments.assignedAt)],
+          });
+          const trainingsCompletedYesterday = allTrainings.filter(t => {
+            const d = t.completedAt ? new Date(t.completedAt) : null;
+            return d && d >= yesterday;
+          });
+          const trainingsPending = allTrainings.filter(t =>
+            t.status === "assigned" || t.status === "in-progress"
+          );
+          const trainingsOverdue = allTrainings.filter(t => {
+            if (t.status === "completed") return false;
+            if (!t.dueDate) return false;
+            return new Date(t.dueDate) < now;
+          });
+
+          // Skill gaps
+          const skills = await getDb().query.skillRatings.findMany({
+            where: eq(skillRatings.userId, input.userId),
+            orderBy: [desc(skillRatings.assessmentDate)],
+          });
+          const skillMap: Record<string, number[]> = {};
+          skills.forEach(s => {
+            if (!skillMap[s.skillArea]) skillMap[s.skillArea] = [];
+            skillMap[s.skillArea].push(s.rating);
+          });
+          const skillGaps = Object.entries(skillMap)
+            .filter(([_, ratings]) => ratings.reduce((a, b) => a + b, 0) / ratings.length < 6)
+            .map(([area, ratings]) => ({
+              skillArea: area,
+              avgRating: Math.round(ratings.reduce((a, b) => a + b, 0) / ratings.length * 10) / 10,
+            }));
+
+          // Company health
+          const allSellers = await getDb().query.sellers.findMany();
+          const allBuyers = await getDb().query.buyers.findMany();
+          const allDeals = await getDb().query.deals.findMany();
+
+          const buyerPoolLow = allBuyers.filter(b => b.status === "qualified" || b.status === "active").length < 10;
+          const sellerLeadsLow = allSellers.filter(s => s.status === "new-lead" || s.status === "contacted").length < 5;
+          const dealsStalled = allDeals.filter(d => d.stage === "sourcing" || d.stage === "marketing").length > 0 &&
+            allDeals.filter(d => d.stage === "closing" || d.stage === "closed-won").length === 0;
+
+          // Working hours check (ET)
+          const etNow = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
+          const etHour = etNow.getHours();
+          const etDay = etNow.getDay();
+          const inWorkingHours = etDay >= 1 && etDay <= 5 && etHour >= 9 && etHour < 17;
+
+          // Role performance
+          const roleScores: Record<string, number[]> = {};
+          results.forEach(r => {
+            if (!roleScores[r.roleId]) roleScores[r.roleId] = [];
+            roleScores[r.roleId].push(r.overallScore);
+          });
+          const roleAverages = Object.entries(roleScores).map(([roleId, scores]) => ({
+            roleId,
+            avgScore: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
+            attempts: scores.length,
+          }));
+
+          // Determine primary action
+          let primaryAction = "earn";
+          let actionTitle = "Time to Earn";
+          let actionDescription = "Everything looks good. What can you close today?";
+
+          if (skillGaps.length > 0) {
+            primaryAction = "train";
+            actionTitle = "Training Required";
+            actionDescription = `Skill gaps detected: ${skillGaps.map(g => g.skillArea.replace(/-/g, " ")).join(", ")}. Complete training before real work.`;
+          } else if (buyerPoolLow) {
+            primaryAction = "source-buyers";
+            actionTitle = "Buyer Pool Critical";
+            actionDescription = `Only ${allBuyers.filter(b => b.status === "qualified" || b.status === "active").length} qualified buyers. Goal: 10. Source investors now.`;
+          } else if (sellerLeadsLow) {
+            primaryAction = "source-sellers";
+            actionTitle = "Need Seller Leads";
+            actionDescription = `Only ${allSellers.filter(s => s.status === "new-lead" || s.status === "contacted").length} active seller leads. Time to prospect.`;
+          } else if (dealsStalled) {
+            primaryAction = "push-deals";
+            actionTitle = "Deals Need Pushing";
+            actionDescription = `${allDeals.filter(d => d.stage === "sourcing" || d.stage === "marketing").length} deals stuck in early stages. Move them forward.`;
+          }
+
+          return {
+            inWorkingHours,
+            employee: {
+              id: user.id,
+              name: user.name,
+              jobRole: profile?.jobRole || "Unassigned",
+            },
+            yesterday: {
+              scenariosCompleted: yesterdaysResults.length,
+              avgScore: yesterdaysResults.length > 0
+                ? Math.round(yesterdaysResults.reduce((s, r) => s + r.overallScore, 0) / yesterdaysResults.length)
+                : 0,
+              trainingsCompleted: trainingsCompletedYesterday.length,
+              wasIdle: yesterdaysResults.length === 0 && trainingsCompletedYesterday.length === 0,
+            },
+            today: {
+              pendingTrainings: trainingsPending.length,
+              overdueTrainings: trainingsOverdue.length,
+              skillGaps,
+              roleAverages,
+            },
+            companyHealth: {
+              totalSellers: allSellers.length,
+              totalBuyers: allBuyers.length,
+              totalDeals: allDeals.length,
+              buyerPoolLow,
+              sellerLeadsLow,
+              dealsStalled,
+            },
+            priority: {
+              primaryAction,
+              actionTitle,
+              actionDescription,
+              shouldTrain: skillGaps.length > 0,
+              shouldSourceBuyers: buyerPoolLow && skillGaps.length === 0,
+              shouldSourceSellers: sellerLeadsLow && !buyerPoolLow && skillGaps.length === 0,
+              shouldPushDeals: dealsStalled && !buyerPoolLow && !sellerLeadsLow && skillGaps.length === 0,
+            },
+          };
+        },
+        () => null,
+      );
+    }),
 });

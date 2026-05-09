@@ -13,6 +13,7 @@ import {
 import { roles } from '@/data/roles';
 import { useAuth } from '@/hooks/useAuth';
 import { trpc } from '@/providers/trpc';
+import WarRoomBanner from '@/components/WarRoomBanner';
 
 const iconMap: Record<string, React.ReactNode> = {
   Phone: <Phone className="w-6 h-6" />,
@@ -206,6 +207,9 @@ export default function Dashboard() {
           </Card>
         </div>
       </section>
+
+      {/* WAR ROOM BANNER */}
+      <WarRoomBanner />
 
       {/* OPERATIONAL TOOLS */}
       <section className="max-w-7xl mx-auto px-4 py-6">

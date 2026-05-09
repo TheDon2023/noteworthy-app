@@ -13,11 +13,15 @@ import TrainingAssignments from '@/pages/TrainingAssignments'
 import SellerTracker from '@/pages/SellerTracker'
 import BuyerCRM from '@/pages/BuyerCRM'
 import DealPipeline from '@/pages/DealPipeline'
+import LandingPage from '@/pages/LandingPage'
+import AuthGate from '@/components/AuthGate'
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      {/* Root: Landing page for visitors, Dashboard for employees */}
+      <Route path="/" element={<AuthGate><Dashboard /></AuthGate>} />
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/simulator" element={<CallSimulator />} />
       <Route path="/study" element={<StudyMaterials />} />

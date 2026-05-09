@@ -1,227 +1,225 @@
 import { useNavigate } from 'react-router';
-import { Button } from '@/components/ui/button';
-import {
-  Phone, Users, Shield, Lock, TrendingUp,
-  DollarSign, Home, Search, Handshake, FileCheck, Settings,
-  User
-} from 'lucide-react';
 
-const stats = [
-  { label: 'NOTES TRADED', value: '$50M+', icon: <DollarSign className="w-6 h-6" /> },
-  { label: 'QUALIFIED BUYERS', value: '200+', icon: <Users className="w-6 h-6" /> },
-  { label: 'SELLER LEADS', value: '1,500+', icon: <Home className="w-6 h-6" /> },
-  { label: 'AVERAGE YIELD', value: '12-18%', icon: <TrendingUp className="w-6 h-6" /> },
+/* ===== Inline SVG Icons ===== */
+const IconPhone = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.9.39 1.77.74 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.83.35 1.7.61 2.6.74A2 2 0 0 1 22 16.92z"/></svg>;
+const IconUser = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const IconShieldCheck = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>;
+const IconLock = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+const IconTarget = () => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>;
+const IconDollar = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+const IconUsers = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const IconHome = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+const IconTrendingUp = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+const IconBinoculars = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.5 16.5a2.5 2.5 0 0 1-5 0V13a2.5 2.5 0 0 1 5 0z"/><path d="M18.5 16.5a2.5 2.5 0 0 1-5 0V13a2.5 2.5 0 0 1 5 0z"/><path d="M2 13h3"/><path d="M19 13h3"/><path d="M8 10V7a2 2 0 0 1 4 0v3"/><path d="M12 10V7a2 2 0 0 1 4 0v3"/></svg>;
+const IconSearch = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const IconHandshake = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/><path d="M12 5.36 8.87 8.5"/><path d="M15.13 8.5 12 5.36"/></svg>;
+const IconFileText = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>;
+const IconShield = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+
+/* ===== CSS Variables from spec ===== */
+const navyDeep = '#051020';
+const gold = '#C5A059';
+const offWhite = '#F8F9FA';
+const mutedText = '#a8b2d1';
+const navyCard = '#0a192f';
+
+/* ===== Data ===== */
+const NAV = ['SERVICES', 'OUR PROCESS', 'ABOUT US', 'RESOURCES', 'CONTACT'];
+const STATS = [
+  { v: '$50M+', l: 'NOTES TRADED', icon: <IconDollar /> },
+  { v: '200+', l: 'QUALIFIED BUYERS', icon: <IconUsers /> },
+  { v: '1,500+', l: 'SELLER LEADS', icon: <IconHome /> },
+  { v: '12-18%', l: 'AVERAGE YIELD', icon: <IconTrendingUp /> },
 ];
-
-const services = [
-  { icon: <Home className="w-8 h-8" />, title: 'Acquire', desc: 'We source high quality notes from motivated sellers nationwide.' },
-  { icon: <Search className="w-8 h-8" />, title: 'Underwrite', desc: 'Our team conducts thorough analysis to assess risk and value.' },
-  { icon: <Handshake className="w-8 h-8" />, title: 'Match', desc: 'We connect qualified buyers with the right opportunities.' },
-  { icon: <FileCheck className="w-8 h-8" />, title: 'Close', desc: 'We coordinate secure, efficient closings through trusted partners.' },
-  { icon: <Settings className="w-8 h-8" />, title: 'Manage', desc: 'We support investors with servicing and ongoing oversight.' },
+const SVC = [
+  { icon: <IconBinoculars />, title: 'Acquire', desc: 'We source high-quality notes from motivated sellers nationwide.' },
+  { icon: <IconSearch />, title: 'Underwrite', desc: 'Our team conducts thorough analysis to assess risk and value.' },
+  { icon: <IconHandshake />, title: 'Match', desc: 'We connect qualified buyers with the right opportunities.' },
+  { icon: <IconFileText />, title: 'Close', desc: 'We coordinate secure, efficient closings through trusted partners.' },
+  { icon: <IconShield />, title: 'Manage', desc: 'We support investors with servicing and ongoing oversight.' },
+];
+const TRUST = [
+  { icon: <IconShieldCheck />, l1: 'Institutional', l2: 'Due Diligence' },
+  { icon: <IconLock />, l1: 'Secure &', l2: 'Compliant' },
+  { icon: <IconTarget />, l1: 'Results-Driven', l2: 'Approach' },
 ];
 
 export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen">
-      {/* ================================================================ */}
-      {/* HERO — Full width dark navy with scroll image on right            */}
-      {/* ================================================================ */}
-      <section className="relative bg-[#0a1628] overflow-hidden">
-        {/* Background: gradient base */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628] via-[#0d1b2e] to-[#162544]" />
+    <div style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+      {/* Hero float animation keyframes */}
+      <style>{`
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-12px); }
+        }
+        .hero-scroll-float {
+          animation: heroFloat 6s ease-in-out infinite;
+        }
+        @media (max-width: 768px) {
+          .hero-grid { flex-direction: column !important; }
+          .stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .svc-grid { grid-template-columns: 1fr !important; }
+          .hero-headline { font-size: clamp(36px, 8vw, 54px) !important; }
+        }
+      `}</style>
 
-        {/* Hero scroll image — positioned absolute right */}
-        <div
-          className="absolute right-0 top-0 w-[55%] h-full bg-cover bg-center bg-no-repeat hidden lg:block"
-          style={{ backgroundImage: 'url(/hero-scroll.jpg)' }}
-        >
-          {/* Gradient fade from navy into image */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] via-[#0a1628]/60 to-transparent" />
+      {/* =================== HERO =================== */}
+      <section className="relative overflow-hidden" style={{ minHeight: '90vh', background: navyDeep }}>
+
+        {/* Scroll hero image — floating animation */}
+        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden lg:block hero-scroll-float" style={{ backgroundImage: 'url(/hero-scroll-2x.png)' }}>
+          <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${navyDeep}ee 0%, ${navyDeep}dd 25%, ${navyDeep}aa 45%, ${navyDeep}66 62%, ${navyDeep}22 80%, transparent 100%)` }} />
         </div>
+        <div className="absolute inset-0 lg:hidden" style={{ background: `linear-gradient(135deg, ${navyDeep} 0%, #0a1a30 100%)` }} />
 
-        {/* Header nav */}
-        <header className="relative z-10 border-b border-[#c9a84c]/10">
-          <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 border-2 border-[#c9a84c] rounded flex items-center justify-center flex-shrink-0">
-                <span className="text-[#c9a84c] font-serif font-bold text-lg leading-none">N</span>
-              </div>
-              <div className="leading-tight">
-                <p className="text-[9px] tracking-[0.25em] text-[#f8f6f1]/80 font-semibold">NOTEWORTHY</p>
-                <p className="text-[9px] tracking-[0.2em] text-[#c9a84c] font-medium">CAPITAL LLC</p>
-                <p className="text-[7px] tracking-[0.1em] text-[#f8f6f1]/30 mt-0.5">NOTE TRADING & INVESTMENT</p>
-              </div>
-            </div>
+        {/* HEADER */}
+        <header className="relative z-10" style={{ borderBottom: '1px solid rgba(197,160,89,0.15)' }}>
+          <div className="mx-auto flex items-center justify-between" style={{ maxWidth: '1400px', height: '90px', padding: '0 40px' }}>
+            <img src="/logo-lockup.png" alt="NoteWorthy Capital LLC" style={{ height: '46px', width: 'auto' }} />
 
-            {/* Nav */}
-            <nav className="hidden lg:flex items-center gap-8">
-              {['SERVICES', 'OUR PROCESS', 'ABOUT US', 'RESOURCES', 'CONTACT'].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="text-[10px] tracking-[0.15em] text-[#f8f6f1]/50 hover:text-[#c9a84c] transition-colors font-medium"
-                >
+            <nav className="hidden lg:flex items-center" style={{ gap: '30px' }}>
+              {NAV.map((item) => (
+                <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="hover:text-[#C5A059] transition-colors"
+                  style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', letterSpacing: '0.12em', fontWeight: 400, color: mutedText, textTransform: 'uppercase' }}>
                   {item}
                 </a>
               ))}
             </nav>
 
-            {/* Login */}
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => navigate('/login')}
-              className="border-[#c9a84c]/40 text-[#f8f6f1]/80 hover:bg-[#c9a84c]/10 hover:text-[#c9a84c] text-[10px] tracking-wider px-4 py-2 h-auto"
-            >
-              <User className="w-3.5 h-3.5 mr-2" />
-              EMPLOYEE LOGIN
-            </Button>
+            <button onClick={() => navigate('/login')}
+              className="flex items-center gap-2 hover:bg-[#C5A059]/10 transition-colors"
+              style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', letterSpacing: '0.1em', fontWeight: 400, color: gold, border: `1px solid ${gold}`, padding: '10px 24px', borderRadius: '2px', background: 'transparent', cursor: 'pointer', textTransform: 'uppercase' }}>
+              <IconUser /> Employee Login
+            </button>
           </div>
         </header>
 
-        {/* Hero content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-20">
-          <div className="max-w-xl">
-            {/* Headline */}
-            <h1 className="font-serif text-5xl lg:text-[64px] text-[#c9a84c] leading-[1.05] mb-4">
-              Turning Paper<br />
+        {/* HERO CONTENT */}
+        <div className="hero-grid relative z-10 mx-auto flex items-center" style={{ maxWidth: '1400px', minHeight: 'calc(90vh - 90px)', padding: '0 40px' }}>
+          <div style={{ maxWidth: '580px' }}>
+            <h2 className="hero-headline" style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 'clamp(48px, 5.5vw, 80px)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.02em', color: offWhite }}>
+              Turning Paper
+            </h2>
+            <h2 className="hero-headline" style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 'clamp(48px, 5.5vw, 80px)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-0.02em', color: gold }}>
               Into Liquidity.
-            </h1>
+            </h2>
 
-            {/* Gold line under headline */}
-            <div className="w-20 h-0.5 bg-[#c9a84c]/60 mb-6" />
+            <div className="mt-5 mb-6" style={{ width: '60px', height: '2px', background: gold }} />
 
-            {/* Body copy */}
-            <p className="text-sm text-[#f8f6f1]/60 leading-relaxed max-w-md mb-8">
-              NoteWorthy Capital LLC specializes in the acquisition and sale of performing and non-performing mortgage notes. Our AI-trained team and vetted buyer network deliver consistent results with institutional-grade due diligence.
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '17px', fontWeight: 300, lineHeight: 1.7, color: mutedText, maxWidth: '500px' }}>
+              NoteWorthy Capital LLC specializes in the acquisition and sale of performing and non-performing mortgage notes. Our disciplined underwriting process and vetted buyer network deliver consistent results with institutional-grade due diligence.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mb-10">
-              <Button
-                className="bg-[#c9a84c] text-[#0a1628] hover:bg-[#d4b55a] font-semibold text-[11px] tracking-wider px-6 py-3 h-auto rounded"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                SELL YOUR NOTE
-              </Button>
-              <Button
-                variant="outline"
-                className="border-[#f8f6f1]/30 text-[#f8f6f1] hover:bg-[#f8f6f1]/10 text-[11px] tracking-wider px-6 py-3 h-auto rounded bg-transparent"
-              >
-                <Users className="w-4 h-4 mr-2" />
-                JOIN BUYER POOL
-              </Button>
+            <div className="flex flex-wrap gap-4 mt-8">
+              <button className="flex items-center gap-2 hover:brightness-110 transition-all"
+                style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 600, letterSpacing: '0.14em', color: navyDeep, background: gold, padding: '16px 32px', borderRadius: '4px', border: 'none', cursor: 'pointer', textTransform: 'uppercase' }}>
+                <IconPhone /> Sell Your Note
+              </button>
+              <button className="flex items-center gap-2 hover:bg-[#C5A059]/8 transition-colors"
+                style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 600, letterSpacing: '0.14em', color: gold, background: 'transparent', padding: '16px 32px', borderRadius: '4px', border: `1px solid ${gold}`, cursor: 'pointer', textTransform: 'uppercase' }}>
+                <IconUser /> Join Buyer Pool
+              </button>
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full border border-[#c9a84c]/30 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-[#c9a84c]" />
+            <div className="flex flex-wrap gap-8 mt-10">
+              {TRUST.map((t, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="flex items-center justify-center" style={{ width: '32px', height: '32px', borderRadius: '50%', border: `1px solid ${gold}40`, color: gold }}>
+                    {t.icon}
+                  </div>
+                  <div className="leading-tight">
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 600, color: offWhite }}>{t.l1}</p>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: mutedText }}>{t.l2}</p>
+                  </div>
                 </div>
-                <div className="leading-tight">
-                  <p className="text-[10px] text-[#f8f6f1] font-semibold">Institutional</p>
-                  <p className="text-[10px] text-[#f8f6f1]/40">Due Diligence</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full border border-[#c9a84c]/30 flex items-center justify-center">
-                  <Lock className="w-4 h-4 text-[#c9a84c]" />
-                </div>
-                <div className="leading-tight">
-                  <p className="text-[10px] text-[#f8f6f1] font-semibold">Secure &</p>
-                  <p className="text-[10px] text-[#f8f6f1]/40">Compliant</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full border border-[#c9a84c]/30 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-[#c9a84c]" />
-                </div>
-                <div className="leading-tight">
-                  <p className="text-[10px] text-[#f8f6f1] font-semibold">Results-Driven</p>
-                  <p className="text-[10px] text-[#f8f6f1]/40">Approach</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================================================================ */}
-      {/* STATS BAR — Overlaps hero (negative margin) on dark navy         */}
-      {/* ================================================================ */}
-      <section className="relative z-20 bg-[#0d1b2e] border-t border-[#c9a84c]/10 -mt-0">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#c9a84c]/10">
-            {stats.map((s, i) => (
-              <div key={i} className="flex items-center gap-4 py-8 px-6">
-                <div className="w-12 h-12 rounded-full border border-[#c9a84c]/30 flex items-center justify-center flex-shrink-0">
-                  <span className="text-[#c9a84c]">{s.icon}</span>
+      {/* =================== STATS BAR =================== */}
+      <section className="relative z-20 px-4 sm:px-6" style={{ marginTop: '-60px' }}>
+        <div className="mx-auto" style={{ maxWidth: '1200px' }}>
+          <div style={{ background: navyCard, border: `1px solid ${gold}45`, borderRadius: '8px', boxShadow: '0 20px 50px rgba(0,0,0,0.4)' }}>
+            <div className="stats-grid grid grid-cols-2 lg:grid-cols-4">
+              {STATS.map((s, i) => (
+                <div key={i} className="flex items-center justify-center gap-4" style={{ padding: '28px 32px', borderRight: i < 3 ? `1px solid ${gold}25` : 'none' }}>
+                  <div className="flex items-center justify-center flex-shrink-0" style={{ width: '48px', height: '48px', borderRadius: '50%', border: `1px solid ${gold}30`, color: gold }}>
+                    {s.icon}
+                  </div>
+                  <div>
+                    <p style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: '36px', fontWeight: 700, color: offWhite, lineHeight: 1 }}>{s.v}</p>
+                    <p className="mt-1" style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', letterSpacing: '0.14em', color: mutedText, textTransform: 'uppercase' }}>{s.l}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-2xl font-bold text-[#f8f6f1]">{s.value}</p>
-                  <p className="text-[9px] tracking-[0.15em] text-[#f8f6f1]/35 mt-0.5">{s.label}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ================================================================ */}
-      {/* SERVICES — Cream/off-white background                             */}
-      {/* ================================================================ */}
-      <section id="services" className="bg-[#f5f0e8]">
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          {/* Section header */}
-          <div className="text-center mb-16">
-            <p className="text-[10px] tracking-[0.3em] text-[#c9a84c] mb-4 font-medium">WHAT WE DO</p>
-            <h2 className="font-serif text-3xl lg:text-4xl text-[#1a2744] mb-4">
+      {/* =================== WHAT WE DO =================== */}
+      <section id="services" className="relative" style={{ background: offWhite }}>
+        <div className="absolute inset-0 bg-cover bg-center opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'url(/cream-pattern.png)' }} />
+
+        <div className="relative mx-auto" style={{ maxWidth: '1400px', padding: '100px 40px 90px' }}>
+          <div className="text-center" style={{ marginBottom: '60px' }}>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', letterSpacing: '0.4em', fontWeight: 400, color: gold, marginBottom: '20px', textTransform: 'uppercase' }}>What We Do</p>
+            <h2 style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 700, color: navyDeep, lineHeight: 1.15, marginBottom: '20px' }}>
               Full-Service Note Trading
             </h2>
-            <p className="text-sm text-[#1a2744]/45 max-w-xl mx-auto">
+            <div className="flex items-center justify-center" style={{ gap: '14px', marginBottom: '20px' }}>
+              <div style={{ width: '50px', height: '1px', background: `${gold}50` }} />
+              <div style={{ width: '6px', height: '6px', background: gold, transform: 'rotate(45deg)' }} />
+              <div style={{ width: '50px', height: '1px', background: `${gold}50` }} />
+            </div>
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '17px', fontWeight: 300, lineHeight: 1.65, color: '#6b7a94', maxWidth: '560px', margin: '0 auto' }}>
               From acquisition through closing, we manage the entire process with precision and integrity.
             </p>
           </div>
 
-          {/* Service cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
-            {services.map((svc, i) => (
-              <div key={i} className="text-center group">
-                <div className="w-20 h-20 mx-auto mb-5 rounded-full border-2 border-[#1a2744]/10 flex items-center justify-center group-hover:border-[#c9a84c]/50 transition-all duration-300 bg-white/50">
-                  <span className="text-[#1a2744]/50 group-hover:text-[#c9a84c] transition-colors duration-300">
-                    {svc.icon}
-                  </span>
+          {/* Services — hover lift effect per spec */}
+          <div className="svc-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5" style={{ gap: '28px' }}>
+            {SVC.map((s, i) => (
+              <div
+                key={i}
+                className="group text-center transition-all duration-300 cursor-pointer"
+                style={{ padding: '24px 16px' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-10px)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+              >
+                <div
+                  className="flex items-center justify-center mx-auto transition-all duration-300 group-hover:bg-[#C5A059]"
+                  style={{ width: '64px', height: '64px', borderRadius: '50%', background: navyDeep, color: gold, marginBottom: '20px' }}
+                >
+                  {s.icon}
                 </div>
-                <h3 className="font-bold text-[#1a2744] text-sm mb-2 tracking-wide">{svc.title}</h3>
-                <p className="text-xs text-[#1a2744]/45 leading-relaxed">{svc.desc}</p>
+                <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', fontWeight: 600, color: navyDeep, marginBottom: '10px' }}>{s.title}</h3>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 300, lineHeight: 1.6, color: '#6b7a94' }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ================================================================ */}
-      {/* FOOTER                                                            */}
-      {/* ================================================================ */}
-      <footer className="bg-[#0a1628] border-t border-[#c9a84c]/10">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* =================== FOOTER =================== */}
+      <footer style={{ background: navyDeep, borderTop: `1px solid ${gold}08` }}>
+        <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-4" style={{ maxWidth: '1400px', padding: '24px 40px' }}>
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 border border-[#c9a84c]/50 rounded flex items-center justify-center flex-shrink-0">
-              <span className="text-[#c9a84c] font-serif font-bold text-[8px]">N</span>
-            </div>
-            <p className="text-[10px] text-[#f8f6f1]/25">
-              © 2026 NoteWorthy Capital LLC. All rights reserved.
-            </p>
+            <img src="/nw-monogram.png" alt="" style={{ height: '24px', width: 'auto', opacity: 0.5 }} />
+            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 300, color: mutedText }}>© 2026 NoteWorthy Capital LLC. All rights reserved.</p>
           </div>
-          <div className="flex items-center gap-6 text-[10px] text-[#f8f6f1]/25">
-            <span className="hover:text-[#c9a84c] cursor-pointer transition-colors">Privacy Policy</span>
-            <span className="hover:text-[#c9a84c] cursor-pointer transition-colors">Terms of Service</span>
-            <span className="hover:text-[#c9a84c] cursor-pointer transition-colors">Disclosures</span>
+          <div className="flex items-center gap-8">
+            {['Privacy Policy', 'Terms of Service', 'Disclosures'].map((item) => (
+              <span key={item} className="hover:text-[#C5A059] transition-colors cursor-pointer" style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', fontWeight: 300, color: mutedText }}>{item}</span>
+            ))}
           </div>
         </div>
       </footer>

@@ -65,11 +65,14 @@ export default function LandingPage() {
           zIndex: 1,
         }} />
 
-        {/* Navy overlay — solid left, fades to show scroll on far right */}
+        {/* Navy overlay — left side only, scroll visible on right */}
         <div style={{
           position: 'absolute',
-          inset: 0,
-          background: `linear-gradient(90deg, ${navy} 0%, ${navy} 80%, ${navy}a0 90%, ${navy}30 100%)`,
+          left: 0,
+          top: 0,
+          width: '75%',
+          height: '100%',
+          background: `linear-gradient(90deg, ${navy} 0%, ${navy} 90%, transparent 100%)`,
           zIndex: 2,
         }} />
 
@@ -96,10 +99,10 @@ export default function LandingPage() {
           </div>
         </header>
 
-        {/* HERO CONTENT — full-width navy wrapper */}
-        <div style={{ position: 'relative', zIndex: 10, background: navy }}>
+        {/* HERO CONTENT */}
+        <div style={{ position: 'relative', zIndex: 10 }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '32px 48px 80px' }}>
-          <div style={{ maxWidth: '520px' }}>
+          <div style={{ maxWidth: '520px', background: navy, padding: '16px 0' }}>
             <h1 style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: 'clamp(48px, 5vw, 64px)', fontWeight: 700, lineHeight: 1.05, color: offWhite, margin: 0, letterSpacing: '-0.02em' }}>
               Turning Paper
             </h1>

@@ -4,95 +4,99 @@
 
 @layer base {
   :root {
-    --background: 222 35% 12%;
-    --foreground: 43 40% 92%;
-    --card: 222 35% 15%;
-    --card-foreground: 43 40% 92%;
-    --popover: 222 35% 15%;
-    --popover-foreground: 43 40% 92%;
-    --primary: 43 50% 54%;
-    --primary-foreground: 222 35% 12%;
-    --secondary: 222 30% 22%;
-    --secondary-foreground: 43 40% 92%;
-    --muted: 222 25% 25%;
-    --muted-foreground: 43 20% 70%;
-    --accent: 43 50% 54%;
-    --accent-foreground: 222 35% 12%;
-    --destructive: 0 62.8% 50%;
+    /* shadcn/ui tokens */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 222 25% 25%;
-    --input: 222 25% 25%;
-    --ring: 43 50% 54%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
     --radius: 0.625rem;
-    --sidebar-background: 222 35% 10%;
-    --sidebar-foreground: 43 40% 92%;
-    --sidebar-primary: 43 50% 54%;
-    --sidebar-primary-foreground: 222 35% 12%;
-    --sidebar-accent: 222 30% 22%;
-    --sidebar-accent-foreground: 43 40% 92%;
-    --sidebar-border: 222 25% 25%;
-    --sidebar-ring: 43 50% 54%;
-  }
-}
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
 
-@layer base {
+    /* CourseForge Design Tokens */
+    /* Core Dark Theme */
+    --abyss: #03045E;
+    --deep-blue: #023E8A;
+    --azure: #0077B6;
+    --sky: #00B4D8;
+    --cyan: #90E0EF;
+    --ice: #CAF0F8;
+
+    /* Core Light Theme */
+    --parchment: #FDFBF6;
+    --warm-sand: #F5F1E8;
+    --deep-ink: #0A2E52;
+    --slate: #2C3E50;
+    --stone: #8D99AE;
+
+    /* Accent Colors */
+    --accent-red: #E63946;
+    --accent-blue: #457B9D;
+    --accent-sand: #F1FAEE;
+    --accent-gold: #FFB703;
+
+    /* Overlay & Gradients */
+    --overlay-dark: rgba(3, 4, 94, 0.85);
+    --gradient-hero: linear-gradient(135deg, #03045E 0%, #023E8A 40%, #0077B6 100%);
+    --gradient-card: linear-gradient(180deg, #023E8A 0%, rgba(2,62,138,0.6) 100%);
+    --gradient-accent: linear-gradient(135deg, #00B4D8, #90E0EF);
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    --space-4xl: 96px;
+
+    /* Container Widths */
+    --max-width-sm: 640px;
+    --max-width-md: 960px;
+    --max-width-lg: 1280px;
+    --max-width-xl: 1440px;
+
+    /* Animation */
+    --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --duration-instant: 100ms;
+    --duration-fast: 200ms;
+    --duration-normal: 400ms;
+    --duration-slow: 800ms;
+    --duration-cinematic: 1200ms;
+  }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-}
-
-@layer utilities {
-  .gold-gradient {
-    background: linear-gradient(135deg, #c9a84c 0%, #e0c674 50%, #c9a84c 100%);
-  }
-  .navy-gradient {
-    background: linear-gradient(180deg, #1a2744 0%, #0f1929 100%);
-  }
-  .glass-panel {
-    background: rgba(26, 39, 68, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(201, 168, 76, 0.15);
-  }
-  .text-gold {
-    color: #c9a84c;
-  }
-  .bg-navy {
-    background-color: #1a2744;
-  }
-  .border-gold {
-    border-color: #c9a84c;
-  }
-  .animate-pulse-gold {
-    animation: pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  @keyframes pulse-gold {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4); }
-    50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(201, 168, 76, 0); }
-  }
-  .animate-ring {
-    animation: ring-pulse 1.5s ease-out infinite;
-  }
-  @keyframes ring-pulse {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.5); opacity: 0; }
-  }
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0f1929;
-}
-::-webkit-scrollbar-thumb {
-  background: #c9a84c;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #e0c674;
 }
